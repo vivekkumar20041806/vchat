@@ -19,7 +19,6 @@ body{
 .container{
   max-width:1000px;
   margin:40px auto;
-  padding:16px;
 }
 
 /* Card style (for auth) */
@@ -81,5 +80,6 @@ button[type="submit"]{
 body { font-family: Arial; padding: 20px; }
 input { margin: 5px; padding: 5px; }
 button { padding: 5px 10px; }
+
 
 
