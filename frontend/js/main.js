@@ -18,7 +18,7 @@ showRegister.addEventListener("click", () => {
   loginForm.classList.add("hidden");
 });
 
-const API = (path) => `http://localhost:5001/api${path}`;
+const API = (path) => `https://vchat-qcou.onrender.com/api${path}`;
 
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
@@ -94,3 +94,4 @@ const selectUser = (user) => {
 };
 
 fetchUsers();
+
