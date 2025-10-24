@@ -19,6 +19,11 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 
+// Add this line
+app.get("/", (req, res) => {
+  res.send("VChat backend is running!");
+});
+
 const PORT = process.env.PORT || 5001;
 const JWT_SECRET = process.env.JWT_SECRET || "secret_for_dev";
 
