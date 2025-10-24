@@ -1,0 +1,36 @@
+<!-- frontend/chat.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Chat - App</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./css/style.css" />
+</head>
+<body>
+  <div class="container chat-container">
+    <header class="chat-header">
+      <h2 id="chatTitle">Chat</h2>
+      <button id="logoutBtn">Logout</button>
+    </header>
+
+    <main class="chat-main">
+      <aside class="users-panel">
+        <h4>Users</h4>
+        <ul id="usersList"></ul>
+      </aside>
+
+      <section class="chat-panel">
+        <div id="messages" class="messages"></div>
+        <form id="messageForm" class="message-form">
+          <input id="messageInput" autocomplete="off" placeholder="Type a message" />
+          <button type="submit">Send</button>
+        </form>
+      </section>
+    </main>
+  </div>
+
+  <script src="https://cdn.socket.io/4.8.1/socket.io.min.js"></script>
+  <script src="./js/chat.js"></script>
+</body>
+</html>
