@@ -2,7 +2,7 @@ const socket = io("http://localhost:5001");
 const token = localStorage.getItem("chat_token");
 const user = JSON.parse(localStorage.getItem("chat_user") || "null");
 
-if (!token || !user) window.location.href = "./index.html";
+if (!token || !user) window.location.href = "../index.html";
 
 const API = (path) => `http://localhost:5001/api${path}`;
 
@@ -145,7 +145,7 @@ socket.on("unauthorized", () => {
   localStorage.removeItem("chat_token");
   localStorage.removeItem("chat_user");
   localStorage.removeItem("selected_user");
-  window.location.href = "./index.html";
+  window.location.href = "../index.html";
 });
 
 // Logout
@@ -154,7 +154,7 @@ logoutBtn.addEventListener("click", () => {
   localStorage.removeItem("chat_user");
   localStorage.removeItem("selected_user");
   chats = {};
-  window.location.href = "./index.html";
+  window.location.href = "../index.html";
 });
 
 // Initialize chat

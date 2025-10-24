@@ -34,7 +34,7 @@ loginForm.addEventListener("submit", async (e) => {
     if (!res.ok) throw new Error(data.message || "Login failed");
     localStorage.setItem("chat_token", data.token);
     localStorage.setItem("chat_user", JSON.stringify(data.user));
-    window.location.href = "./chat.html";
+    window.location.href = "./frontend/chat.html";
   } catch (err) {
     authMsg.textContent = err.message;
   }
@@ -55,7 +55,7 @@ registerForm.addEventListener("submit", async (e) => {
     if (!res.ok) throw new Error(data.message || "Register failed");
     localStorage.setItem("chat_token", data.token);
     localStorage.setItem("chat_user", JSON.stringify(data.user));
-    window.location.href = "./chat.html";
+    window.location.href = "./frontend/chat.html";
   } catch (err) {
     authMsg.textContent = err.message;
   }
