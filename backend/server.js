@@ -19,7 +19,7 @@ app.use(express.json());
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 
-// Add this line
+// ✅ Add this line to test server
 app.get("/", (req, res) => {
   res.send("VChat backend is running!");
 });
@@ -78,7 +78,5 @@ io.on("connection", (socket) => {
     if (socket.userId) onlineUsers.delete(socket.userId.toString());
   });
 });
-
-
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
