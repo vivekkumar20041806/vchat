@@ -172,8 +172,6 @@ async function initializeChat() {
 
       // Load messages from backend
       const messages = await loadChatHistory(selectedUser._id);
-      chats[selectedUser._id] = messages;
-
       messagesDiv.innerHTML = "";
       messages.forEach(m => appendMessage(m));
       scrollBottom();
