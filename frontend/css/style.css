@@ -77,9 +77,10 @@ button[type="submit"]{
 .message-form button{padding:10px 14px;border-radius:8px;border:none;background:var(--accent);color:white;cursor:pointer}
 
 
-body { font-family: Arial; padding: 20px; }
+body { font-family: Arial; }
 input { margin: 5px; padding: 5px; }
 button { padding: 5px 10px; }
+
 
 
 
