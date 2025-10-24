@@ -37,38 +37,43 @@ const io = new Server(server, {
 io.on("connection", (socket) => {
   console.log("Socket connected:", socket.id);
 
+  // User join
   socket.on("join", ({ token }) => {
     const payload = verifyToken(token);
     if (!payload) return socket.emit("unauthorized");
     const userId = payload.id;
     onlineUsers.set(userId.toString(), socket.id);
     socket.userId = userId;
-  })});
+  });
 
-socket.on("privateMessage", async (data) => {
-  try {
-    const payload = verifyToken(data.token);
-    if (!payload) return socket.emit("unauthorized");
+  // Private message
+  socket.on("privateMessage", async (data) => {
+    try {
+      const payload = verifyToken(data.token);
+      if (!payload) return socket.emit("unauthorized");
 
-    const msg = await Message.create({
-      senderId: payload.id,
-      receiverId: data.toUserId,
-      text: data.text,
-      createdAt: new Date() // optional, schema default me already hai
-    });
+      const msg = await Message.create({
+        senderId: payload.id,
+        receiverId: data.toUserId,
+        text: data.text,
+        createdAt: new Date()
+      });
 
-    const toSocketId = onlineUsers.get(data.toUserId);
-    if (toSocketId) io.to(toSocketId).emit("receivePrivateMessage", msg);
-    socket.emit("messageSent", msg);
+      const toSocketId = onlineUsers.get(data.toUserId);
+      if (toSocketId) io.to(toSocketId).emit("receivePrivateMessage", msg);
 
-  } catch (err) {
-    console.error("Error sending private message:", err);
-  }
+      socket.emit("messageSent", msg);
+    } catch (err) {
+      console.error("Error sending private message:", err);
+    }
+  });
+
+  // Disconnect
+  socket.on("disconnect", () => {
+    if (socket.userId) onlineUsers.delete(socket.userId.toString());
+  });
 });
 
-socket.on("disconnect", () => {
-  if (socket.userId) onlineUsers.delete(socket.userId.toString());
-});
 
 
 server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
