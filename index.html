@@ -40,5 +40,27 @@
   </div>
 
   <script src="./frontend/js/main.js"></script>
+
+
+
+
+
+  <iframe src="./pages/social-media.html" frameborder="0" style="width:100%; height:100px;"></iframe>
+
+
+<div id="footer"></div>
+<script>
+  fetch('./pages/footer.html')   // footer.html ka path correct rakho
+    .then(response => response.text())
+    .then(data => {
+      document.getElementById('footer').innerHTML = data;
+    })
+    .catch(err => console.error("Footer load error:", err));
+</script>
+
+
+
+
+
 </body>
 </html>

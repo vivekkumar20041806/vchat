@@ -1,0 +1,38 @@
+<style>
+
+    .social-section{
+        text-align:right;
+
+    }
+
+    .social-section img{
+        height: 30px;
+        animation: floatInsta 3s ease-in-out infinite;
+        transition: transform 0.3s ease;
+        height: 45px;
+        position: fixed;
+        bottom: 40px;
+        right: 20px;
+        z-index: 999;
+    }
+
+    .social-section img:hover {
+    transform: scale(1.2) rotate(10deg);
+    }
+
+    /* floating animation */
+@keyframes floatInsta {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-8px);
+  }
+}
+</style>
+
+<div class="social-section">
+  <h2></h2>
+  <a href="https://www.instagram.com/vivek.kr1806" target="_blank" class="insta-link">
+    <img src="../frontend/assets/images/Insta.png" alt="Instagram"> </a>
+</div>
