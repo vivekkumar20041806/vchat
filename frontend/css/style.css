@@ -5,6 +5,7 @@
   --accent:#2b7cff;
   --muted:#6b7280;
   --sender:#e6f0ff;
+  padding:15px;
 }
 
 *{box-sizing:border-box}
@@ -80,6 +81,7 @@ button[type="submit"]{
 body { font-family: Arial; }
 input { margin: 5px; padding: 5px; }
 button { padding: 5px 10px; }
+
 
 
 
