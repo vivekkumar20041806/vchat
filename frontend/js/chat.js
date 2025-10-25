@@ -1,10 +1,10 @@
-const socket = io("http://localhost:5001"); 
+const socket = io("https://vchat-qcou.onrender.com");
 const token = localStorage.getItem("chat_token");
 const user = JSON.parse(localStorage.getItem("chat_user") || "null");
 
 if (!token || !user) window.location.href = "../index.html";
 
-const API = (path) => `http://localhost:5001/api${path}`;
+const API = (path) => `https://vchat-qcou.onrender.com/api${path}`;
 
 const chatTitle = document.getElementById("chatTitle");
 const usersList = document.getElementById("usersList");
