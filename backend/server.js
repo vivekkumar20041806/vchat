@@ -12,37 +12,64 @@ const Message = require("./models/messageModel");
 const app = express();
 const server = http.createServer(app);
 
+// ✅ Connect to MongoDB
 connectDB();
 
-app.use(cors());
+// ✅ Proper CORS setup (Frontend + Local)
+app.use(
+  cors({
+    origin: [
+      "http://localhost:3000",
+      "https://vchat-qcou.onrender.com"  // 👈 your frontend URL
+    ],
+    credentials: true,
+  })
+);
+
+// ✅ Body parser
 app.use(express.json());
+
+// ✅ API Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
 
-// ✅ Add this line to test server
+// ✅ Test route
 app.get("/", (req, res) => {
-  res.send("VChat backend is running!");
+  res.send("VChat backend is running successfully!");
 });
 
-const PORT = process.env.PORT || 5001;
+// ✅ Dynamic port (Render assigns automatically)
+const PORT = process.env.PORT || 5000;
 const JWT_SECRET = process.env.JWT_SECRET || "secret_for_dev";
 
-// Online users map
+// ✅ Online users map
 const onlineUsers = new Map();
 
+// ✅ Token verification function
 const verifyToken = (token) => {
-  try { return jwt.verify(token, JWT_SECRET); }
-  catch (e) { return null; }
+  try {
+    return jwt.verify(token, JWT_SECRET);
+  } catch (e) {
+    return null;
+  }
 };
 
+// ✅ Socket.io setup
 const io = new Server(server, {
-  cors: { origin: "*", methods: ["GET", "POST"] }
+  cors: {
+    origin: [
+      "http://localhost:3000",
+      "https://vchat-qcou.onrender.com"
+    ],
+    methods: ["GET", "POST"],
+    credentials: true,
+  },
 });
 
 io.on("connection", (socket) => {
-  console.log("Socket connected:", socket.id);
+  console.log("🟢 Socket connected:", socket.id);
 
-  // User join
+  // User joins
   socket.on("join", ({ token }) => {
     const payload = verifyToken(token);
     if (!payload) return socket.emit("unauthorized");
@@ -51,7 +78,7 @@ io.on("connection", (socket) => {
     socket.userId = userId;
   });
 
-  // Private message
+  // Private message event
   socket.on("privateMessage", async (data) => {
     try {
       const payload = verifyToken(data.token);
@@ -61,7 +88,7 @@ io.on("connection", (socket) => {
         senderId: payload.id,
         receiverId: data.toUserId,
         text: data.text,
-        createdAt: new Date()
+        createdAt: new Date(),
       });
 
       const toSocketId = onlineUsers.get(data.toUserId);
@@ -69,14 +96,16 @@ io.on("connection", (socket) => {
 
       socket.emit("messageSent", msg);
     } catch (err) {
-      console.error("Error sending private message:", err);
+      console.error("❌ Error sending private message:", err);
     }
   });
 
-  // Disconnect
+  // User disconnect
   socket.on("disconnect", () => {
     if (socket.userId) onlineUsers.delete(socket.userId.toString());
+    console.log("🔴 Socket disconnected:", socket.id);
   });
 });
 
-server.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+// ✅ Start server
+server.listen(PORT, () => console.log(`✅ Server running on port ${PORT}`));
