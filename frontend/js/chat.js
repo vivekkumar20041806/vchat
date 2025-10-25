@@ -13,68 +13,92 @@ const messageForm = document.getElementById("messageForm");
 const messageInput = document.getElementById("messageInput");
 const logoutBtn = document.getElementById("logoutBtn");
 
-chatTitle.textContent = `Logged in as ${user.username}`;
-socket.emit("join", { token });
+const toggleUsersBtn = document.getElementById("toggleUsers");
+const usersPanel = document.getElementById("usersPanel");
+const usersOverlay = document.getElementById("usersOverlay");
+const closeUsersPanelBtn = document.getElementById("closeUsersPanel");
 
 let selectedUser = null;
-let chats = {}; // Store messages per userId
+let chats = {};
 
-// Load users and auto-select last selected or first user
+// Initial header
+chatTitle.textContent = `Logged in as ${user.username}`;
+
+// Toggle mobile users panel
+toggleUsersBtn.addEventListener("click", () => {
+  usersPanel.classList.toggle("active");
+  usersOverlay.classList.toggle("active");
+});
+closeUsersPanelBtn.addEventListener("click", () => {
+  usersPanel.classList.remove("active");
+  usersOverlay.classList.remove("active");
+});
+usersOverlay.addEventListener("click", () => {
+  usersPanel.classList.remove("active");
+  usersOverlay.classList.remove("active");
+});
+
+// Ensure panel hidden on desktop
+window.addEventListener("resize", () => {
+  if(window.innerWidth > 768){
+    usersPanel.classList.remove("active");
+    usersOverlay.classList.remove("active");
+  }
+});
+
+// Load users
 async function loadUsers() {
   try {
     const res = await fetch(API("/auth/users"));
     if (!res.ok) return;
     const data = await res.json();
-    usersList.innerHTML = "";
 
+    usersList.innerHTML = "";
     const userId = user.id || user._id;
     let firstUser = null;
     const storedUser = JSON.parse(localStorage.getItem("selected_user"));
 
-    data.users.forEach((u) => {
+    data.users.forEach(u => {
       if (u._id === userId) return;
-
       const li = document.createElement("li");
       li.textContent = u.username;
       li.dataset.userid = u._id;
       li.addEventListener("click", () => selectUserToChat(u));
       usersList.appendChild(li);
-
       if (!firstUser) firstUser = u;
     });
 
-    // Auto-select stored user if exists, else first user
     if (storedUser) {
       const matchedUser = data.users.find(u => u._id === storedUser._id);
-      if (matchedUser) await selectUserToChat(matchedUser);
-      else if (firstUser) await selectUserToChat(firstUser);
+      if (matchedUser) selectUserToChat(matchedUser);
+      else if (firstUser) selectUserToChat(firstUser);
     } else if (firstUser) {
-      await selectUserToChat(firstUser);
+      selectUserToChat(firstUser);
     }
-
   } catch (err) { console.error(err); }
 }
 
-// Select a user
+// Select user
 async function selectUserToChat(u) {
   if (selectedUser && selectedUser._id === u._id) return;
-
   selectedUser = u;
   localStorage.setItem("selected_user", JSON.stringify(selectedUser));
 
-  // Load messages from chats object if not already loaded
+  // Update header dynamically
+  chatTitle.textContent = `Chat with ${selectedUser.username}`;
+
+  // Load messages
   if (!chats[u._id]) {
     const messages = await loadChatHistory(u._id);
     chats[u._id] = messages;
   }
 
-  // Clear div and append messages
   messagesDiv.innerHTML = "";
   chats[u._id].forEach(m => appendMessage(m));
   scrollBottom();
 }
 
-// Load chat history from backend
+// Load chat history
 async function loadChatHistory(otherUserId) {
   try {
     const res = await fetch(API(`/chat/between/${user.id}/${otherUserId}`));
@@ -87,13 +111,11 @@ async function loadChatHistory(otherUserId) {
   }
 }
 
-// Append a single message
+// Append message
 function appendMessage(m) {
   const div = document.createElement("div");
   div.classList.add("message");
-  if (m.senderId && (m.senderId.toString() === user.id.toString() || m.senderId === user.id)) {
-    div.classList.add("me");
-  }
+  if (m.senderId && (m.senderId.toString() === user.id.toString() || m.senderId === user.id)) div.classList.add("me");
 
   const meta = document.createElement("div");
   meta.className = "meta";
@@ -107,16 +129,14 @@ function appendMessage(m) {
   messagesDiv.appendChild(div);
 }
 
-// Scroll chat to bottom
-function scrollBottom() {
-  messagesDiv.scrollTop = messagesDiv.scrollHeight;
-}
+// Scroll
+function scrollBottom() { messagesDiv.scrollTop = messagesDiv.scrollHeight; }
 
-// Send private message
+// Send message
 messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const text = messageInput.value.trim();
-  if (!text || !selectedUser) return alert("Please select a user to chat with.");
+  if (!text || !selectedUser) return alert("Select a user first!");
   socket.emit("privateMessage", { token, toUserId: selectedUser._id, text });
   messageInput.value = "";
 });
@@ -140,43 +160,11 @@ socket.on("messageSent", (ack) => {
   scrollBottom();
 });
 
-socket.on("unauthorized", () => {
-  alert("Session expired. Please login again.");
-  localStorage.removeItem("chat_token");
-  localStorage.removeItem("chat_user");
-  localStorage.removeItem("selected_user");
-  window.location.href = "../index.html";
-});
-
 // Logout
 logoutBtn.addEventListener("click", () => {
-  localStorage.removeItem("chat_token");
-  localStorage.removeItem("chat_user");
-  localStorage.removeItem("selected_user");
-  chats = {};
+  localStorage.clear();
   window.location.href = "../index.html";
 });
 
-// Initialize chat
-initializeChat();
-async function initializeChat() { 
-  await loadUsers();
-
-  // Load last selected user's chat after refresh
-  const storedUser = JSON.parse(localStorage.getItem("selected_user"));
-  if (storedUser) {
-    const matchedUser = (await fetch(API("/auth/users")).then(res => res.json()))
-                        .users.find(u => u._id === storedUser._id);
-    if (matchedUser) {
-      selectedUser = matchedUser;
-
-      // Load messages from backend
-      const messages = await loadChatHistory(selectedUser._id);
-      chats[selectedUser._id] = messages;
-
-      messagesDiv.innerHTML = "";
-      messages.forEach(m => appendMessage(m));
-      scrollBottom();
-    }
-  }
-}
+// Initialize
+loadUsers();

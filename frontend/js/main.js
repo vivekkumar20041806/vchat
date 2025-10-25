@@ -18,8 +18,10 @@ showRegister.addEventListener("click", () => {
   loginForm.classList.add("hidden");
 });
 
+// 🔹 API base URL for Render
 const API = (path) => `https://vchat-qcou.onrender.com/api${path}`;
 
+// -------------------- Login --------------------
 loginForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const emailOrUsername = document.getElementById("loginEmailOrUsername").value.trim();
@@ -32,14 +34,18 @@ loginForm.addEventListener("submit", async (e) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Login failed");
+
+    // 🔹 Save token and user to localStorage
     localStorage.setItem("chat_token", data.token);
     localStorage.setItem("chat_user", JSON.stringify(data.user));
+
     window.location.href = "./frontend/chat.html";
   } catch (err) {
     authMsg.textContent = err.message;
   }
 });
 
+// -------------------- Register --------------------
 registerForm.addEventListener("submit", async (e) => {
   e.preventDefault();
   const username = document.getElementById("regUsername").value.trim();
@@ -53,17 +59,16 @@ registerForm.addEventListener("submit", async (e) => {
     });
     const data = await res.json();
     if (!res.ok) throw new Error(data.message || "Register failed");
+
+    // 🔹 Save token and user to localStorage
     localStorage.setItem("chat_token", data.token);
     localStorage.setItem("chat_user", JSON.stringify(data.user));
+
     window.location.href = "./frontend/chat.html";
   } catch (err) {
     authMsg.textContent = err.message;
   }
 });
-
-
-
-
 
 // -------------------- Users List --------------------
 const usersList = document.getElementById("usersList");
@@ -71,11 +76,12 @@ const usersList = document.getElementById("usersList");
 const fetchUsers = async () => {
   const token = localStorage.getItem("chat_token");
   try {
-    const res = await fetch("http://localhost:5001/api/auth/users", {
+    const res = await fetch(API("/auth/users"), {
       headers: { Authorization: `Bearer ${token}` }
     });
     const data = await res.json();
     usersList.innerHTML = "";
+
     data.users.forEach(user => {
       const li = document.createElement("li");
       li.textContent = user.username;
@@ -93,5 +99,5 @@ const selectUser = (user) => {
   // यहाँ chat logic डाल सकते हो (जैसे messages load करना)
 };
 
+// 🔹 Initialize
 fetchUsers();
-
