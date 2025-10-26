@@ -7,31 +7,22 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <link rel="stylesheet" href="./frontend/css/style.css" />
 
-
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-W0YX014NTR"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-W0YX014NTR');
-</script>
-
-
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-W0YX014NTR"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-W0YX014NTR');
+  </script>
 </head>
 
+<body style="display:flex; flex-direction:column; min-height:100vh; margin:0; font-family:Inter,system-ui,Segoe UI,Roboto,'Helvetica Neue',Arial; background:var(--bg); color:#111827;">
 
-
-
-<body>
-
-    <img src="./frontend/assets/images/logo.png" alt="VChat Logo" class="logo" />
+  <img src="./frontend/assets/images/logo.png" alt="VChat Logo" class="logo" />
 
   <div class="container auth-container">
     <div class="card">
-
-
       <h2>Welcome to Vchat</h2>
 
       <div class="tabs">
@@ -58,64 +49,16 @@
 
   <script src="./frontend/js/main.js"></script>
 
+  <!-- Ye div footer ko bottom tak push karega -->
+  <div style="flex:1;"></div>
 
-
-
-
-<div class="responsive-space"></div>
-
-<style>
-  .responsive-space {
-    height: 70px; /* default (large screen/laptop) */
-    display: inline-block;
-  }
-
-  /* 800px se chhoti screen */
-  @media screen and (max-width: 800px) {
-    .responsive-space {
-      height: 10px;
-    }
-  }
-
-  /* 500px se chhoti screen */
-  @media screen and (max-width: 500px) {
-    .responsive-space {
-      height: 30px;
-    }
-  }
-
-  /* 420px se chhoti screen */
-  @media screen and (max-width: 420px) {
-    .responsive-space {
-      height: 60px;
-    }
-  }
-
-  /* 370px se chhoti screen */
-  @media screen and (max-width: 370px) {
-    .responsive-space {
-      height: 70px;
-    }
-  }
-</style>
-
-
-
-
-
-
-
-<div id="footer"></div>
-<script>
-  fetch('./pages/footer.html')
-    .then(res => res.text())
-    .then(data => document.getElementById('footer').innerHTML = data)
-    .catch(err => console.error("Footer load error:", err));
-</script>
-
-
-
-
+  <div id="footer"></div>
+  <script>
+    fetch('./pages/footer.html')
+      .then(res => res.text())
+      .then(data => document.getElementById('footer').innerHTML = data)
+      .catch(err => console.error("Footer load error:", err));
+  </script>
 
 </body>
 </html>
