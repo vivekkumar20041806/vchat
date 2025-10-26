@@ -1,45 +1,75 @@
 <footer>
   <style>
+    /* Reset default margin/padding */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      margin: 0;
+      padding: 0; /* Extra white line remove */
+    }
+
     footer {
       background-color: #111;
-      padding: 20px 0;
-      text-align: center;
+      padding: 20px;
+      position: relative; /* For absolute icon */
       color: gray;
-      font-size: 16px;
-      font-weight: 700;
       font-family: Arial, sans-serif;
-      position: relative;
-      z-index: 1;
+      font-weight: 700;
+      font-size: 16px;
+      text-align: center; /* Footer text center */
+      line-height: 1; /* Reduce extra spacing */
+    }
+
+    footer p {
+      margin: 0; /* Exact center text */
+    }
+
+    /* Social Icon container */
+    .social-section {
+      position: absolute; /* Footer relative parent ke liye */
+      right: 20px;        /* Right corner */
+      top: 50%;           /* Vertical center */
+      transform: translateY(-50%);
+      z-index: 9999;
+    }
+
+    .social-section img {
+      height: 45px;
+      animation: floatInsta 3s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+
+    .social-section img:hover {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    @keyframes floatInsta {
+      0%,100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
+    }
+
+    /* Mobile adjustment */
+    @media (max-width: 500px) {
+      .social-section {
+        position: static;  /* Normal flow on small screens */
+        transform: none;
+        margin: 10px 0 0 0;
+      }
     }
   </style>
 
+  <!-- Social Media Icon -->
+  <div class="social-section">
+    <a href="https://www.instagram.com/vivek.kr1806" target="_blank">
+      <img src="https://vivekkumar20041806.github.io/vchat/frontend/assets/images/Insta.png" alt="Instagram">
+    </a>
+  </div>
+
+  <!-- Footer Text -->
   <p>Created by Vivek &copy; 2025</p>
 </footer>
-
-<!-- Social Icon outside footer -->
-<div class="social-section">
-  <a href="https://www.instagram.com/vivek.kr1806" target="_blank">
-    <img src="https://vivekkumar20041806.github.io/vchat/frontend/assets/images/Insta.png" alt="Instagram">
-  </a>
-</div>
-
-<style>
-.social-section img {
-  position: fixed;   /* screen bottom-right */
-  bottom: 60px;
-  right: 20px;
-  height: 45px;
-  z-index: 9999;
-  animation: floatInsta 3s ease-in-out infinite;
-  transition: transform 0.3s ease;
-}
-
-.social-section img:hover {
-  transform: scale(1.2) rotate(10deg);
-}
-
-@keyframes floatInsta {
-  0%,100% { transform: translateY(0); }
-  40% { transform: translateY(-8px); }
-}
-</style>
