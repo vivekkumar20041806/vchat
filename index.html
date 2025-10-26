@@ -61,7 +61,48 @@
 
 
 
-<div style="height: 70px; display: inline-block;"></div>
+
+<div class="responsive-space"></div>
+
+<style>
+  .responsive-space {
+    height: 70px; /* default (large screen/laptop) */
+    display: inline-block;
+  }
+
+  /* 800px se chhoti screen */
+  @media screen and (max-width: 800px) {
+    .responsive-space {
+      height: 10px;
+    }
+  }
+
+  /* 500px se chhoti screen */
+  @media screen and (max-width: 500px) {
+    .responsive-space {
+      height: 30px;
+    }
+  }
+
+  /* 420px se chhoti screen */
+  @media screen and (max-width: 420px) {
+    .responsive-space {
+      height: 60px;
+    }
+  }
+
+  /* 370px se chhoti screen */
+  @media screen and (max-width: 370px) {
+    .responsive-space {
+      height: 70px;
+    }
+  }
+</style>
+
+
+
+
+
 
 
 <div id="footer"></div>
