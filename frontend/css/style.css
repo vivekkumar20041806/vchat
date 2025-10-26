@@ -14,11 +14,25 @@ body{
   color:#111827;
 }
 
-/* container center */
-.container{
-  max-width:1000px;
- 
+
+
+html, body {
+  height: 100%;
+  margin: 0;
 }
+
+.chat-container {
+  min-height: calc(100vh - 60px); /* footer ke height ke hisab se adjust */
+}
+
+footer {
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+
+
 
 /* Card style (for auth) */
 .card{

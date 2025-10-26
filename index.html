@@ -45,7 +45,16 @@
 
 
 
-  <iframe src="./pages/social-media.html" frameborder="0" style="width:100%; height:100px;"></iframe>
+<div id="social"></div>
+
+<script>
+  fetch('./pages/social-media.html')
+    .then(res => res.text())
+    .then(data => document.getElementById('social').innerHTML = data)
+    .catch(err => console.error("Social load error:", err));
+</script>
+
+
 
 
 <div id="footer"></div>
