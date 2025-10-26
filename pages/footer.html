@@ -1,6 +1,5 @@
 <footer>
   <style>
-    /* Reset default margin/padding */
     * {
       margin: 0;
       padding: 0;
@@ -10,36 +9,53 @@
 
     body {
       margin: 0;
-      padding: 0; /* Extra white line remove */
+      padding: 0;
     }
 
     footer {
       background-color: #111;
-      padding: 20px;
-      position: relative; /* For absolute icon */
       color: gray;
-      font-family: Arial, sans-serif;
-      font-weight: 700;
-      font-size: 16px;
-      text-align: center; /* Footer text center */
-      line-height: 1; /* Reduce extra spacing */
+      padding: 40px 20px;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: flex-start;
     }
 
-    footer p {
-      margin: 0; /* Exact center text */
+    .footer-column {
+      flex: 1;
+      min-width: 200px;
+      margin: 10px;
+    }
+
+    .footer-column h3 {
+      color: #fff;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+
+    .footer-column a {
+      display: block;
+      color: gray;
+      text-decoration: none;
+      margin: 6px 0;
+      font-size: 15px;
+      transition: color 0.3s;
+    }
+
+    .footer-column a:hover {
+      color: #fff;
     }
 
     /* Social Icon container */
     .social-section {
-      position: absolute; /* Footer relative parent ke liye */
-      right: 20px;        /* Right corner */
-      top: 50%;           /* Vertical center */
-      transform: translateY(-50%);
-      z-index: 9999;
+      display: flex;
+      gap: 10px;
+      margin-top: 10px;
     }
 
     .social-section img {
-      height: 45px;
+      height: 35px;
       animation: floatInsta 3s ease-in-out infinite;
       transition: transform 0.3s ease;
     }
@@ -53,16 +69,43 @@
       40% { transform: translateY(-8px); }
     }
 
-
+    .footer-bottom {
+      text-align: center;
+      width: 100%;
+      margin-top: 20px;
+      border-top: 1px solid #333;
+      padding-top: 10px;
+      color: gray;
+      font-size: 14px;
+    }
   </style>
 
-  <!-- Social Media Icon -->
-  <div class="social-section">
-    <a href="https://www.instagram.com/vivek.kr1806" target="_blank">
-      <img src="https://vivekkumar20041806.github.io/vchat/frontend/assets/images/Insta.png" alt="Instagram">
-    </a>
+  <!-- Footer Columns -->
+  <div class="footer-column">
+    <h3>About</h3>
+    <a href="#">About Us</a>
+    <a href="#">Contact</a>
+    <a href="#">Privacy Policy</a>
   </div>
 
-  <!-- Footer Text -->
-  <p>Created by Vivek &copy; 2025</p>
+  <div class="footer-column">
+    <h3>Quick Links</h3>
+    <a href="https://vivekkumar20041806.github.io/vchat" target="_blank">Vchat Website</a>
+    <a href="https://vivekkumar20041806.github.io/gym/index.html" target="_blank">Gym Website</a>
+    <!-- 👇 बाकी लिंक तुम यहाँ जोड़ सकते हो -->
+  </div>
+
+  <div class="footer-column">
+    <h3>Follow Me</h3>
+    <div class="social-section">
+      <a href="https://www.instagram.com/vivek.kr1806" target="_blank">
+        <img src="https://vivekkumar20041806.github.io/vchat/frontend/assets/images/Insta.png" alt="Instagram">
+      </a>
+    </div>
+  </div>
+
+  <!-- Footer Bottom -->
+  <div class="footer-bottom">
+    <p>Created by Vivek &copy; 2025 | All rights reserved</p>
+  </div>
 </footer>
