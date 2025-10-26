@@ -82,14 +82,23 @@ button[type="submit"]{
 /*            Chat layout        */
 /* ============================= */
 .chat-container{max-width:1100px;margin:20px auto;padding:10px}
-.chat-header{
-  display:flex;justify-content:space-between;align-items:center;margin-bottom:10px; padding:10px; background:var(--card)
+.chat-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    background: var(--card);
+    position: sticky; /* Sticky header */
+    top: 0;           /* Top se chipka */
+    z-index: 100;     /* Other elements ke upar */
 }
+
 .left-section{display:flex;align-items:center;gap:10px}
-.center-section{flex:1;text-align:center;font-size:14px;color:var(--muted)}
+.center-section{flex:1;text-align:center;font-size:14px;color:var(--muted); font-weight:500;}
 .right-section{display:flex;align-items:center}
 .logo{width:100px;height:40px;border-radius:50%;object-fit:cover}
-.mobile-users-toggle{display:none;font-size:24px;cursor:pointer;margin-left:10px}
+.mobile-users-toggle{display:none;font-size:24px;cursor:pointer;}
 
 /* Users panel */
 .users-panel{
