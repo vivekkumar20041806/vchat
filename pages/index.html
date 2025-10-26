@@ -1,0 +1,80 @@
+<!-- frontend/index.html -->
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>Vchat App - Login / Register</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="stylesheet" href="./frontend/css/style.css" />
+
+
+<!-- Google tag (gtag.js) -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-W0YX014NTR"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', 'G-W0YX014NTR');
+</script>
+
+
+</head>
+
+
+
+
+<body>
+
+    <img src="./frontend/assets/images/logo.png" alt="VChat Logo" class="logo" />
+
+  <div class="container auth-container">
+    <div class="card">
+
+
+      <h2>Welcome to Vchat</h2>
+
+      <div class="tabs">
+        <button id="showLogin" class="active">Login</button>
+        <button id="showRegister">Register</button>
+      </div>
+
+      <form id="loginForm" class="form">
+        <input type="text" id="loginEmailOrUsername" placeholder="Email or Username" required />
+        <input type="password" id="loginPassword" placeholder="Password" required />
+        <button type="submit">Login</button>
+      </form>
+
+      <form id="registerForm" class="form hidden">
+        <input type="text" id="regUsername" placeholder="Username" required />
+        <input type="email" id="regEmail" placeholder="Email" required />
+        <input type="password" id="regPassword" placeholder="Password" required />
+        <button type="submit">Register</button>
+      </form>
+
+      <p id="authMsg" class="msg"></p>
+    </div>
+  </div>
+
+  <script src="./frontend/js/main.js"></script>
+
+
+
+
+<div style="height: 70px; display: inline-block;"></div>
+
+
+<div id="footer"></div>
+<script>
+  fetch('./pages/footer.html')
+    .then(res => res.text())
+    .then(data => document.getElementById('footer').innerHTML = data)
+    .catch(err => console.error("Footer load error:", err));
+</script>
+
+
+
+
+
+</body>
+</html>
