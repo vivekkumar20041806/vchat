@@ -45,25 +45,14 @@
 
 
 
-<div id="social"></div>
-
-<script>
-  fetch('./pages/social-media.html')
-    .then(res => res.text())
-    .then(data => document.getElementById('social').innerHTML = data)
-    .catch(err => console.error("Social load error:", err));
-</script>
-
-
 
 
 <div id="footer"></div>
+
 <script>
-  fetch('./pages/footer.html')   // footer.html ka path correct rakho
-    .then(response => response.text())
-    .then(data => {
-      document.getElementById('footer').innerHTML = data;
-    })
+  fetch('./pages/footer.html')
+    .then(res => res.text())
+    .then(data => document.getElementById('footer').innerHTML = data)
     .catch(err => console.error("Footer load error:", err));
 </script>
 

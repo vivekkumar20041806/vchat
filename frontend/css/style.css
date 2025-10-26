@@ -136,16 +136,3 @@ button[type="submit"]{
   .chat-container{padding:10px;margin:20px auto !important}
 }
 
-
-
-
-.social-section img {
-  position: fixed;      /* Screen par fixed */
-  bottom: 80px;         /* Footer ke upar */
-  right: 20px;
-  z-index: 9999;        /* Footer ke upar */
-  height: 45px;
-  animation: floatInsta 3s ease-in-out infinite;
-  transition: transform 0.3s ease;
-}
-

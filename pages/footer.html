@@ -1,6 +1,7 @@
+<!-- Footer with floating Instagram icon -->
 <footer>
   <style>
-    /* Footer Text Style with Background */
+    /* Reset & font */
     * {
       margin: 0;
       padding: 0;
@@ -8,23 +9,51 @@
       font-family: "Poppins", sans-serif;
     }
 
+    /* Footer style */
     footer {
-      background-color: #111;  /* Dark background */
-      padding: 8px 0;          /* Top & bottom spacing */
-      position: relative;       /* Footer ko normal flow me rakho */
-      z-index: 1;               /* Footer ka z-index low rakho, icon ke neeche */
+      background-color: #111;
+      padding: 20px 0;
+      text-align: center;
+      color: gray;
+      font-size: 16px;
+      font-weight: 700;
+      font-family: 'Arial', sans-serif;
+      position: relative; /* Footer normal flow */
+      z-index: 1;         /* Footer low */
     }
 
-    /* Footer Text Style */
-    footer p {
-      color: gray;               /* Text color */
-      text-align: center;        /* Center text */
-      font-size: 16px;           /* Font size */
-      font-weight: 700;          /* Medium weight */
-      margin: 10px 0;            /* Top & bottom spacing */
-      font-family: 'Arial', sans-serif;  /* Font family */
+    /* Social Icon container */
+    .social-section {
+      position: fixed;   /* Screen par fixed */
+      bottom: 60px;      /* Footer ke upar distance */
+      right: 20px;       /* Right corner */
+      z-index: 9999;     /* Footer ke upar */
+    }
+
+    /* Social Icon */
+    .social-section img {
+      height: 45px;
+      animation: floatInsta 3s ease-in-out infinite;
+      transition: transform 0.3s ease;
+    }
+
+    .social-section img:hover {
+      transform: scale(1.2) rotate(10deg);
+    }
+
+    @keyframes floatInsta {
+      0%, 100% { transform: translateY(0); }
+      40% { transform: translateY(-8px); }
     }
   </style>
 
+  <!-- Footer Text -->
   <p>Created by Vivek &copy; 2025</p>
 </footer>
+
+<!-- Social Media Icon (footer ke bahar) -->
+<div class="social-section">
+  <a href="https://www.instagram.com/vivek.kr1806" target="_blank">
+    <img src="https://vivekkumar20041806.github.io/vchat/frontend/assets/images/Insta.png" alt="Instagram">
+  </a>
+</div>
