@@ -1,5 +1,9 @@
-const socket = io("https://vchat-qcou.onrender.com");
+// ✅ Socket initialization (updated with token auth)
 const token = localStorage.getItem("chat_token");
+const socket = io("https://vchat-qcou.onrender.com", {
+  auth: { token }
+});
+
 const user = JSON.parse(localStorage.getItem("chat_user") || "null");
 
 if (!token || !user) window.location.href = "../index.html";
@@ -40,7 +44,7 @@ usersOverlay.addEventListener("click", () => {
 
 // Ensure panel hidden on desktop
 window.addEventListener("resize", () => {
-  if(window.innerWidth > 768){
+  if (window.innerWidth > 768) {
     usersPanel.classList.remove("active");
     usersOverlay.classList.remove("active");
   }
@@ -58,7 +62,7 @@ async function loadUsers() {
     let firstUser = null;
     const storedUser = JSON.parse(localStorage.getItem("selected_user"));
 
-    data.users.forEach(u => {
+    data.users.forEach((u) => {
       if (u._id === userId) return;
       const li = document.createElement("li");
       li.textContent = u.username;
@@ -69,13 +73,15 @@ async function loadUsers() {
     });
 
     if (storedUser) {
-      const matchedUser = data.users.find(u => u._id === storedUser._id);
+      const matchedUser = data.users.find((u) => u._id === storedUser._id);
       if (matchedUser) selectUserToChat(matchedUser);
       else if (firstUser) selectUserToChat(firstUser);
     } else if (firstUser) {
       selectUserToChat(firstUser);
     }
-  } catch (err) { console.error(err); }
+  } catch (err) {
+    console.error(err);
+  }
 }
 
 // Select user
@@ -94,8 +100,8 @@ async function selectUserToChat(u) {
   }
 
   messagesDiv.innerHTML = "";
-  chats[u._id].forEach(m => appendMessage(m));
-  scrollBottom();
+  chats[u._id].forEach((m) => appendMessage(m));
+  scrollBottom(true);
 }
 
 // Load chat history
@@ -115,7 +121,12 @@ async function loadChatHistory(otherUserId) {
 function appendMessage(m) {
   const div = document.createElement("div");
   div.classList.add("message");
-  if (m.senderId && (m.senderId.toString() === user.id.toString() || m.senderId === user.id)) div.classList.add("me");
+  if (
+    m.senderId &&
+    (m.senderId.toString() === user.id.toString() ||
+      m.senderId === user.id)
+  )
+    div.classList.add("me");
 
   const meta = document.createElement("div");
   meta.className = "meta";
@@ -129,35 +140,72 @@ function appendMessage(m) {
   messagesDiv.appendChild(div);
 }
 
-// Scroll
-function scrollBottom() { messagesDiv.scrollTop = messagesDiv.scrollHeight; }
+// ✅ Scroll (improved)
+function scrollBottom(force = false) {
+  if (force) {
+    messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  } else {
+    const nearBottom =
+      messagesDiv.scrollHeight - messagesDiv.scrollTop - messagesDiv.clientHeight < 200;
+    if (nearBottom) messagesDiv.scrollTop = messagesDiv.scrollHeight;
+  }
+}
 
-// Send message
+// ✅ Send message
 messageForm.addEventListener("submit", (e) => {
   e.preventDefault();
   const text = messageInput.value.trim();
   if (!text || !selectedUser) return alert("Select a user first!");
   socket.emit("privateMessage", { token, toUserId: selectedUser._id, text });
   messageInput.value = "";
+  scrollBottom(true);
 });
 
-// Socket events
-socket.on("receivePrivateMessage", (msg) => {
-  if (!chats[msg.senderId]) chats[msg.senderId] = [];
-  chats[msg.senderId].push(msg);
+// ✅ Socket connect logs
+socket.on("connect", () => {
+  console.log("[socket] connected:", socket.id);
+});
+socket.on("connect_error", (err) => {
+  console.error("[socket] connect_error:", err.message);
+});
 
-  if (selectedUser && (msg.senderId === selectedUser._id || msg.senderId === user.id)) {
-    appendMessage(msg);
-    scrollBottom();
+// ✅ Real-time message receive fix
+socket.on("receivePrivateMessage", (msg) => {
+  console.log("[socket] receivePrivateMessage payload:", msg);
+
+  const senderId =
+    msg.senderId ?? msg.sender ?? msg.from ?? msg.userId ?? "unknown";
+  const text = msg.text ?? msg.message ?? msg.body;
+  const createdAt = msg.createdAt ?? new Date().toISOString();
+
+  if (!chats[senderId]) chats[senderId] = [];
+  const messageObj = { senderId, text, createdAt };
+  chats[senderId].push(messageObj);
+
+  const selectedId = selectedUser ? selectedUser._id || selectedUser.id : null;
+  if (
+    selectedId &&
+    (senderId.toString() === selectedId.toString() ||
+      senderId.toString() === (user.id || user._id).toString())
+  ) {
+    appendMessage(messageObj);
+    scrollBottom(true);
+  } else {
+    console.log("[socket] new message from", senderId);
   }
 });
 
+// ✅ Sent message confirm
 socket.on("messageSent", (ack) => {
   if (!chats[selectedUser._id]) chats[selectedUser._id] = [];
-  const msg = { senderId: user.id, text: ack.text, createdAt: ack.createdAt };
+  const msg = {
+    senderId: user.id,
+    text: ack.text,
+    createdAt: ack.createdAt,
+  };
   chats[selectedUser._id].push(msg);
   appendMessage(msg);
-  scrollBottom();
+  scrollBottom(true);
 });
 
 // Logout

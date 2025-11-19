@@ -34,6 +34,9 @@ footer {
 
 
 
+
+
+
 /* Card style (for auth) */
 .card{
   background:var(--card);
@@ -119,11 +122,62 @@ button[type="submit"]{
 /* chat panel */
 .chat-main{display:flex;gap:16px}
 .chat-panel{flex:1;display:flex;flex-direction:column;min-height:100vh;background:var(--card);padding:12px;border-radius:10px}
-.messages{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;min-height:100px}
+.messages{flex:1;overflow-y:auto;padding:10px;display:flex;flex-direction:column;gap:8px;min-height:100px; }
 .message{max-width:70%;padding:10px;border-radius:10px;background:#f3f4f6}
 .message.me{align-self:flex-end;background:var(--sender)}
 .meta{font-size:12px;color:var(--muted);margin-bottom:6px}
-.message-form{display:flex;gap:8px;padding-top:8px;border-top:1px solid #eef2f7;position:sticky;bottom:0;background:var(--card);z-index:10}
+
+
+.messages {
+  flex: 1;
+  overflow-y: auto;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 100px;
+}
+
+
+.chat-panel::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  height: 10px; /* same gap as .message-form bottom */
+  display: block;
+  background: var(--card);
+  z-index: 5;
+}
+
+
+.messages {
+  position: relative;
+}
+
+.messages::after {
+  content: "";
+  position: sticky;
+  bottom: 0;
+  height: 20px;
+  display: block;
+  background: linear-gradient(to bottom, transparent, var(--card));
+  z-index: 5;
+}
+
+
+.message-form {
+  display: flex;
+  gap: 8px;
+  padding: 0 10px; /* andar ka padding */
+  border-top: 1px solid #eef2f7;
+  position: sticky;
+  bottom: 10px; /* 👈 ye line gap ke liye */
+  background: var(--card);
+  z-index: 10;
+  border-radius: 10px; /* optional, thoda smooth look */
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05); /* thoda floating effect */
+}
+
 .message-form input{flex:1;padding:10px;border-radius:8px;border:1px solid #e6e9ef}
 .message-form button{padding:10px 14px;border-radius:8px;border:none;background:var(--accent);color:white;cursor:pointer}
 
